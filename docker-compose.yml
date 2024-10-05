@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./flowcytometry_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./flowcytometry_backend:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    build:
+      context: ./flowcytometry-frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./flowcytometry-frontend:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
