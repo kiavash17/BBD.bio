@@ -9,6 +9,7 @@ sudo apt-get install -y python3-pip docker.io docker-compose
 pip install -r requirements.txt
 
 # Install Node dependencies for frontend
-cd ../flowcytometry-frontend
+cd flowcytometry-frontend
+npm install || npx create-react-app .
 npm install
 cd ..
