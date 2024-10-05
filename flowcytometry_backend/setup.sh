@@ -1,18 +1,31 @@
-
 #!/bin/bash
 
 # Install system-level dependencies
 sudo apt-get update
-sudo apt-get install -y python3-pip docker.io docker-compose
+sudo apt-get install -y python3-pip docker.io docker-compose containerd
 
-# Remove conflicting files if they exist
-rm -f Dockerfile package-lock.json requirements.txt setup.sh
+# Check if Docker and Node.js installed correctly
+if ! command -v docker &> /dev/null || ! command -v npm &> /dev/null
+then
+    echo "Docker or Node.js could not be installed. Please install them manually."
+    exit 1
+fi
 
 # Install Python dependencies
-pip install -r requirements.txt
+if [ -f "requirements.txt" ]; then
+    pip install -r requirements.txt
+else
+    echo "requirements.txt not found!"
+    exit 1
+fi
 
-# Install Node dependencies for frontend
-cd flowcytometry-frontend
-npm install || npx create-react-app .
-npm install
-cd ..
+# Set up frontend project
+if [ ! -d "flowcytometry-frontend" ]; then
+    mkdir flowcytometry-frontend
+    cd flowcytometry-frontend
+    npx create-react-app .
+    cd ..
+else
+    cd flowcytometry-frontend
+    npm install
+    cd ..
